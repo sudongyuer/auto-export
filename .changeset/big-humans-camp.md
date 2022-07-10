@@ -2,4 +2,4 @@
 "auto-export": patch
 ---
 
-update package logo
+update readme

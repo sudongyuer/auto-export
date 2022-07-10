@@ -23,9 +23,11 @@ pnpm add -D auto-export
 
 ### Config `export.config.ts`
 
-- targetDir  : the directory to export files
+- targetDir (require) : the directory to export files
 
-- outputDir : the directory to generate the `index.ts` file to export files
+- outputDir (optional) : the directory to generate the `index.ts` file to export files
+
+- customImport (optional) : custom the import statement to use in the `index.ts` file 
 
 ```js
 import { defineExportConfig } from '@sudongyuer/auto-export'
