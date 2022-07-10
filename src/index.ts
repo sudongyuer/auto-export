@@ -56,7 +56,7 @@ ${fileNameArray.map(item => `  ${item}`).join(',\n')},
       files.forEach((file) => {
         if (file !== 'index.ts') {
           const fileName = transformFileName(file)
-          generateStr += `import ${fileName} from '${file}'\n`
+          generateStr += `import ${fileName} from './${file}'\n`
         }
       })
       const exportStr = `
