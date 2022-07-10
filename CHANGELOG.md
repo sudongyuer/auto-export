@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.1.1
+
+### Patch Changes
+
+- e6fdb53: update package logo
+
 ## 0.1.0
 
 ### Minor Changes
