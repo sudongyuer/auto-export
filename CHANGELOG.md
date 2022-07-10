@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 1.0.0
+
+### Major Changes
+
+- 2353e44: release v1.1.1
+
 ## 0.1.1
 
 ### Patch Changes
