@@ -6,7 +6,7 @@ A cli can automatically export files of the same type
 
 
 <p align='center'>
-<img src='https://git.poker/sudongyuer/image-bed/blob/master/20220710/logo.55pfd5e40lw0.png?raw=true' width='200'/>
+<img src='https://git.poker/sudongyuer/image-bed/blob/master/20220710/---assets----images----a.159jjelqs5hc.png?raw=true' width='200'/>
 </p>
 
 ## Why
