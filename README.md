@@ -1,6 +1,6 @@
 # auto-export
 
-A CLI can automatically export files of the same type
+A cli can automatically export files of the same type
 
 ![](https://img.shields.io/github/package-json/v/sudongyuer/auto-export)
 
