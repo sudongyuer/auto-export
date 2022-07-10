@@ -2,7 +2,7 @@
 
 A cli can automatically export files of the same type
 
-[![NPM version](https://img.shields.io/github/package-json/v/sudongyuer/auto-export)](https://www.npmjs.com/package/sudongyuer/auto-export)
+[![NPM version](https://img.shields.io/github/package-json/v/sudongyuer/auto-export)](https://www.npmjs.com/package/auto-export)
 
 
 <p align='center'>
