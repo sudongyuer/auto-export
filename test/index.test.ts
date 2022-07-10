@@ -1,4 +1,6 @@
+import { loadConfig } from 'unconfig'
 import { describe, expect, it } from 'vitest'
+import type { ExportConfig } from '../src'
 
 describe('should', () => {
   it('exported', () => {
@@ -13,7 +15,7 @@ it('transfromFileName', () => {
     let result = ''
     const characterArray = str.split('-')
     characterArray.forEach((c) => {
-      console.warn(c)
+      // console.warn(c)
       result += `${c[0].toUpperCase()}${c.slice(1)}`
     })
     return result
@@ -22,3 +24,20 @@ it('transfromFileName', () => {
   expect(result).equal('AbcDefG')
 })
 
+it('path resolve', () => {
+  // console.log('==============', path.resolve('/a', '../b', './c'))
+  // const config = tryRequire('./export.config', cwd())
+  // console.log(config, '123113231110010o0o011')
+})
+
+it('import', async () => {
+  const { config: configArray } = await loadConfig<ExportConfig>({
+    sources: [
+      {
+        files: 'export.config',
+        extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+      },
+    ],
+  })
+  console.warn(configArray)
+})
