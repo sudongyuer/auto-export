@@ -4,8 +4,9 @@ A cli can automatically export files of the same type
 
 [![NPM version](https://img.shields.io/github/package-json/v/sudongyuer/auto-export)](https://www.npmjs.com/package/sudongyuer/auto-export)
 
+
 <p align='center'>
-<img src='./logo.png' width='200'/>
+<img src='https://git.poker/sudongyuer/image-bed/blob/master/20220710/logo.55pfd5e40lw0.png?raw=true' width='200'/>
 </p>
 
 ## Why
