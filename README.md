@@ -17,7 +17,7 @@ When you want to export many files of the same type in one folder, you may cost 
 ### Install
 
 ```ball
-pnpm add -D @sudongyuer/auto-export
+pnpm add -D auto-export
 ```
 
 ### Config `export.config.ts`
