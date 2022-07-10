@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 1.0.1
+
+### Patch Changes
+
+- 431e296: update logo
+
 ## 1.0.0
 
 ### Major Changes
