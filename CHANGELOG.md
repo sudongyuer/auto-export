@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.2.2
+
+### Patch Changes
+
+- c703af8: fix import uri
+
 ## 1.0.1
 
 ### Patch Changes
