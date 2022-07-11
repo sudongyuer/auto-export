@@ -23,6 +23,9 @@ async function main() {
     let generateStr = ''
     if (customImport) {
       let files = fs.readdirSync(path.resolve(cwd(), targetDir))
+      if (files.length === 0)
+        return
+
       files = files.filter((file) => {
         return (file !== 'index.ts' && file !== '.DS_Store')
       })
@@ -42,10 +45,13 @@ ${fileNameArray.map(item => `  ${item}`).join(',\n')},
 `
       generateStr += exportStr
       fs.writeFileSync(path.resolve(cwd(), `${outputDir}/index.ts`), generateStr)
-      console.warn(chalk.bgBlue(`🚀🚀🚀 ${path.resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
+      console.warn(chalk.bgBlue(`${path.resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
     }
     else {
       let files = fs.readdirSync(path.resolve(cwd(), targetDir))
+      if (files.length === 0)
+        return
+      console.warn(files, '12312')
       files = files.filter((file) => {
         return (file !== 'index.ts' && file !== '.DS_Store')
       })
@@ -66,7 +72,7 @@ ${fileNameArray.map(item => `  ${item}`).join(',\n')},
 `
       generateStr += exportStr
       fs.writeFileSync(path.resolve(cwd(), `${outputDir}/index.ts`), generateStr)
-      console.warn(chalk.bgBlue(`🚀🚀🚀 ${path.resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
+      console.warn(chalk.bgBlue(`${path.resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
     }
   })
   process.exit(0)
