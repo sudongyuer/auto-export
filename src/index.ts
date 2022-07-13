@@ -51,7 +51,6 @@ ${fileNameArray.length !== 0 ? fileNameArray.map(item => `  ${item}`).join(',\n'
       let files = fs.readdirSync(path.resolve(cwd(), targetDir))
       if (files.length === 0)
         return
-      console.warn(files, '12312')
       files = files.filter((file) => {
         return (file !== 'index.ts' && file !== '.DS_Store')
       })
