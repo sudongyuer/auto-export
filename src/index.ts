@@ -40,7 +40,7 @@ async function main() {
       })
       const exportStr = `
 export {
-${fileNameArray.map(item => `  ${item}`).join(',\n')},
+${fileNameArray.length !== 0 ? fileNameArray.map(item => `  ${item}`).join(',\n') : ''}
 }
 `
       generateStr += exportStr
@@ -67,7 +67,7 @@ ${fileNameArray.map(item => `  ${item}`).join(',\n')},
       })
       const exportStr = `
 export {
-${fileNameArray.map(item => `  ${item}`).join(',\n')},
+${fileNameArray.length !== 0 ? fileNameArray.map(item => `  ${item}`).join(',\n') : ''}
 }
 `
       generateStr += exportStr
