@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.2.5
+
+### Patch Changes
+
+- e88d420: fix remove all files index.ts behavior
+
 ## 0.2.4
 
 ### Patch Changes
