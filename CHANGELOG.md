@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.2.6
+
+### Patch Changes
+
+- d1f3fa5: update index.ts
+
 ## 0.2.5
 
 ### Patch Changes
