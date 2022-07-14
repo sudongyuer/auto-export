@@ -29,6 +29,8 @@ pnpm add -D auto-export
 
 - customImport (optional) : custom the import statement to use in the `index.ts` file 
 
+- depth(optional , default true) : traverse all subdirectories
+
 ```js
 import { defineExportConfig } from '@sudongyuer/auto-export'
 export default defineExportConfig({
@@ -45,6 +47,13 @@ export default defineExportConfig({
       customImport: (fileName, file) => {
         return `import { ReactComponent as ${fileName} } from '${file}'`
       },
+    },
+      {
+      targetDir: './src/assets/svgs',
+      customImport: (fileName, file) => {
+        return `import { ReactComponent as ${fileName} } from '${file}'`
+      },
+      depth:true
     },
   ],
 })
