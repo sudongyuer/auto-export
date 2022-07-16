@@ -1,5 +1,12 @@
 # @sudongyuer/auto-export
 
+## 0.3.0
+
+### Minor Changes
+
+- 95dc32d: feature: add depth option to support nested directory
+- 95dc32d: feature: add autoprefix option to support export file with prefix
+
 ## 0.2.6
 
 ### Patch Changes
