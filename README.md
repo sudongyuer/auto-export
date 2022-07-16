@@ -1,6 +1,6 @@
 # auto-export
 
-A cli can automatically export files of the same type
+A cli can automatically export files
 
 [![NPM version](https://img.shields.io/github/package-json/v/sudongyuer/auto-export)](https://www.npmjs.com/package/auto-export)
 
@@ -11,7 +11,14 @@ A cli can automatically export files of the same type
 
 ## Why
 
-When you want to export many files of the same type in one folder, you may cost a lot of time to `copy and paste` the same code. eg if you want to export all `images `in one folder, you need to copy and paste the same code for each image, and export these images in a `index.ts` file.
+When you want to export many files of the same type in one folder, you may cost a lot of time to `copy and paste` the same code. eg if you want to export all `images `in one folder, you need to copy and paste the same code for each image, and export these images in a `index.ts` file.Why not have a try to use `auto-export`👻
+
+## 🚀 Features
+- Multiple directory generate support
+- Nested directory generate support
+- Custom output directory support
+- Custom import statement support
+- Auto Prefix support
 
 ## Usage
 
@@ -25,11 +32,13 @@ pnpm add -D auto-export
 
 - targetDir (require) : the directory to export files
 
-- outputDir (optional) : the directory to generate the `index.ts` file to export files
+- outputDir (optional,default targetDir) : the directory to generate the `index.ts` file to export files
 
 - customImport (optional) : custom the import statement to use in the `index.ts` file 
 
-- depth(optional , default true) : traverse all subdirectories
+- depth (optional , default true) : traverse all subdirectories
+
+- autoPrefix (optional , default false) : auto add prefix to the file name. Note that the if you open the customImport option,this option will be ignored
 
 ```js
 import { defineExportConfig } from '@sudongyuer/auto-export'
@@ -37,6 +46,11 @@ export default defineExportConfig({
   configs: [
     {
       targetDir: './src/assets/images',
+    },
+    {
+      targetDir: './src/assets/img',
+      depth: true,
+      autoPrefix: true
     },
     {
       targetDir: './src/assets/css',
@@ -48,12 +62,12 @@ export default defineExportConfig({
         return `import { ReactComponent as ${fileName} } from '${file}'`
       },
     },
-      {
-      targetDir: './src/assets/svgs',
-      customImport: (fileName, file) => {
-        return `import { ReactComponent as ${fileName} } from '${file}'`
+    {
+      targetDir: './src/assets/gif',
+      customImport: (fileName, file, fileType) => {
+        return `import ${fileType}${fileName} from '${file}'`
       },
-      depth:true
+      depth: true
     },
   ],
 })
