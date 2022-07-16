@@ -2,8 +2,8 @@ import { cwd } from 'process'
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
-
 import { loadConfig } from 'unconfig'
+import { pascalCase } from 'pascal-case'
 
 async function main() {
   const { config: configArray } = await loadConfig<ExportConfig>({
@@ -14,95 +14,152 @@ async function main() {
       },
     ],
   })
-  configArray?.configs.forEach((config: config) => {
-    const { targetDir, outputDir = targetDir, customImport } = config
-    if (!targetDir) {
-      console.error(chalk.bgRedBright('Please check the export.config.ts'))
-      process.exit(-1)
-    }
-    let generateStr = ''
-    if (customImport) {
-      let files = fs.readdirSync(path.resolve(cwd(), targetDir))
-      if (files.length === 0)
-        return
 
-      files = files.filter((file) => {
-        return (file !== 'index.ts' && file !== '.DS_Store')
-      })
-      const fileNameArray = files.map((file) => {
-        return transformFileName(file)
-      })
-      files.forEach((file) => {
-        if (file !== 'index.ts') {
-          const fileName = transformFileName(file)
-          generateStr += `${customImport(fileName, file)}\n`
-        }
-      })
-      const exportStr = `
-export {
-${fileNameArray.length !== 0 ? fileNameArray.map(item => `  ${item}`).join(',\n') : ''}
+  if (Array.isArray(configArray?.configs)) {
+    for (let i = 0; i < configArray?.configs.length; i++) {
+      const { targetDir, outputDir = targetDir, customImport, depth = true, autoPrefix = false } = configArray?.configs[i]
+      if (!targetDir) {
+        console.error(chalk.bgRedBright('Please check the export.config.ts'))
+        process.exit(-1)
+      }
+      const absoluteOutputDirPath = path.resolve(cwd(), outputDir)
+      // { fileName: string, file: string , fileType: string}[]
+      const fileData = await findFile(targetDir, absoluteOutputDirPath, depth)
+      if (fileData)
+        await generated(fileData, customImport, outputDir, autoPrefix)
+    }
+    process.exit(0)
+  }
+  else {
+    process.exit(0)
+  }
 }
-`
-      generateStr += exportStr
-      fs.writeFileSync(path.resolve(cwd(), `${outputDir}/index.ts`), generateStr)
-      console.warn(chalk.bgBlue(`${path.resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
+
+async function findFile(
+  filePath: string,
+  outputDir: string,
+  depth: boolean,
+): Promise<{ fileName: string; file: string; fileType: string }[]> {
+  const absolutePath = path.resolve(cwd(), filePath)
+  const files = fs.readdirSync(absolutePath)
+  // Todo: any is not a good type
+  // if (files.length === 0) return undefined as any
+  const result = []
+  for (const index in files) {
+    const file = files[index]
+    const fileAbsolutePath = path.resolve(absolutePath, file)
+    if (fs.statSync(fileAbsolutePath)?.isDirectory()) {
+      if (depth)
+        result.push(await findFile(fileAbsolutePath, outputDir, depth))
     }
     else {
-      let files = fs.readdirSync(path.resolve(cwd(), targetDir))
-      if (files.length === 0)
-        return
-      files = files.filter((file) => {
-        return (file !== 'index.ts' && file !== '.DS_Store')
-      })
-
-      const fileNameArray = files.map((file) => {
-        return transformFileName(file)
-      })
-      files.forEach((file) => {
-        if (file !== 'index.ts') {
-          const fileName = transformFileName(file)
-          generateStr += `import ${fileName} from './${file}'\n`
-        }
-      })
-      const exportStr = `
-export {
-${fileNameArray.length !== 0 ? fileNameArray.map(item => `  ${item}`).join(',\n') : ''}
-}
-`
-      generateStr += exportStr
-      fs.writeFileSync(path.resolve(cwd(), `${outputDir}/index.ts`), generateStr)
-      console.warn(chalk.bgBlue(`${path.resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
+      if (file !== 'index.ts' && file !== '.DS_Store') {
+        const { fileName, fileType } = transformFileName(file)
+        const pathName = path.relative(outputDir, fileAbsolutePath)
+        result.push({
+          fileName,
+          file: pathName,
+          fileType,
+        })
+      }
     }
+  }
+  return result.flat()
+}
+
+async function generated(
+  fileData: FileData,
+  customImport: CustomImport | undefined,
+  outputDir: string,
+  autoPrefix: boolean,
+) {
+  let generatedContext = ''
+  if (typeof customImport === 'function')
+    generatedContext = customImportGenerated(fileData, customImport)
+
+  else
+    generatedContext = importGenerated(fileData, autoPrefix)
+
+  fs.writeFileSync(
+    path.resolve(cwd(), `${outputDir}/index.ts`),
+    generatedContext,
+  )
+  console.warn(chalk.bgBlue(`${path.resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
+}
+
+function customImportGenerated(fileData: FileData, customImport: CustomImport): string {
+  let customImportStr = ''
+  const exportNames: string[] = []
+  fileData.forEach((item) => {
+    const customImportResult = `${customImport(item.fileName, item.file, item.fileType)}\n`
+    customImportStr += customImportResult
+    exportNames.push(handleCustomImportExport(customImportResult))
   })
-  process.exit(0)
+  const exportStr = `
+export {
+${exportNames.length !== 0
+      ? exportNames.map(item => `  ${item}`).join(',\n')
+      : ''
+    }
+}`
+  return customImportStr + exportStr
+}
+
+function handleCustomImportExport(str: string) {
+  // import { a as xx } from
+  // import xx from
+  // get xx
+  let importName = ''
+  const result = str.match(/import\s*{?\s*(\w+)\s+\s*(?:as\s+(\w*))?\s*}?/) || []
+  if (result[2])
+    importName = result[2]
+  else importName = result[1]
+  return importName
+}
+
+function importGenerated(fileData: FileData, autoPrefix: boolean) {
+  let generatedContext = ''
+  fileData.forEach((item) => {
+    if (autoPrefix)
+      item.fileName = `${pascalCase(item.fileType)}${item.fileName}`
+    const importStr = `import ${item.fileName} from './${item.file}'\n`
+    generatedContext += importStr
+  })
+  generatedContext += `
+export {
+${fileData.length !== 0
+      ? fileData.map(item => `  ${item.fileName}`).join(',\n')
+      : ''
+    }
+}`
+  return generatedContext
 }
 
 main()
 
-function transformFileName(str: string) {
-  str = str.slice(0, str.indexOf('.'))
-  let result = ''
-  const characterArray = str.split('-')
-  characterArray.forEach((c) => {
-    result += `${c[0].toUpperCase()}${c.slice(1)}`
-  })
-  return result
+export function transformFileName(file: string) {
+  let fileName = file.slice(0, file.lastIndexOf('.'))
+  const fileType = file.slice(file.lastIndexOf('.') + 1)
+  fileName = pascalCase(fileName)
+  return { fileName, fileType }
 }
 
-interface config {
+type FileData = { fileName: string; file: string; fileType: string }[]
+type CustomImport = (fileName: string, file: string, fileType: string) => string
+interface Config {
   targetDir: string
   outputDir?: string
-  customImport?: (fileName: string, file: string) => string
+  customImport?: CustomImport
+  depth?: boolean
+  autoPrefix?: boolean
 }
 
 export interface ExportConfig {
-  configs: Array<config>
+  configs: Array<Config>
 }
 
 function defineExportConfig(config: ExportConfig): ExportConfig {
   return config
 }
 
-export {
-  defineExportConfig,
-}
+export { defineExportConfig }
