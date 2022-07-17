@@ -41,7 +41,7 @@ pnpm add -D auto-export
 - autoPrefix (optional , default false) : auto add prefix to the file name. Note that the if you open the customImport option,this option will be ignored
 
 ```js
-import { defineExportConfig } from '@sudongyuer/auto-export'
+import { defineExportConfig } from 'auto-export'
 export default defineExportConfig({
   configs: [
     {
