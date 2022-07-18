@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.3.2
+
+### Patch Changes
+
+- 191f79e: update utils
+
 ## 0.3.1
 
 ### Patch Changes
