@@ -11,6 +11,7 @@ importers:
       chalk: ^5.0.1
       commander: ^9.3.0
       eslint: ^8.19.0
+      jiti: ^1.14.0
       pascal-case: ^3.1.2
       tsx: ^3.6.0
       typescript: ^4.7.4
@@ -28,6 +29,7 @@ importers:
       '@sudongyuer/eslint-config': 0.1.3_eslint@8.19.0+typescript@4.7.4
       '@types/node': 18.0.3
       eslint: 8.19.0
+      jiti: 1.14.0
       pascal-case: 3.1.2
       tsx: 3.7.1
       typescript: 4.7.4
