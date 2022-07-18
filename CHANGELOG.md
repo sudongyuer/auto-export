@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.3.1
+
+### Patch Changes
+
+- 12d5d45: update readme.md
+
 ## 0.3.0
 
 ### Minor Changes
