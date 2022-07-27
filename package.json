@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "cac": "^6.7.12",
-    "chalk": "^5.0.1",
+    "chalk": "4.1.2",
     "commander": "^9.3.0",
     "unconfig": "^0.3.5"
   },
