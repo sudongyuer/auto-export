@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.3.3
+
+### Patch Changes
+
+- fbab262: update chalk dep
+
 ## 0.3.2
 
 ### Patch Changes
