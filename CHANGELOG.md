@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.3.4
+
+### Patch Changes
+
+- f05f185: update
+
 ## 0.3.3
 
 ### Patch Changes
