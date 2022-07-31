@@ -72,6 +72,6 @@ it('regex test', () => {
 })
 
 it('compatibility windows slash', () => {
-  const importStr = `import PngA from '${path.join('./a', 'a.png')}'\n`
+  const importStr = `import PngA from '${path.join('a.png')}'\n`
   console.warn(importStr)
 })
