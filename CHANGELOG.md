@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.3.6
+
+### Patch Changes
+
+- 3601af9: update
+
 ## 0.3.5
 
 ### Patch Changes
