@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { loadConfig } from 'unconfig'
 import { describe, expect, it } from 'vitest'
 import { pascalCase } from 'pascal-case'
@@ -68,4 +69,9 @@ it('regex test', () => {
     fileName = result[2]
   else fileName = result[1]
   expect(fileName).equal('HellWorld')
+})
+
+it('compatibility windows slash', () => {
+  const importStr = `import PngA from '${path.join('./a', 'a.png')}'\n`
+  console.warn(importStr)
 })

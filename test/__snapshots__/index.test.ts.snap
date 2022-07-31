@@ -1,0 +1,6 @@
+// Vitest Snapshot v1
+
+exports[`normal 1`] = `
+"import PngA from 'a.png'
+"
+`;

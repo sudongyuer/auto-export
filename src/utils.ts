@@ -160,8 +160,8 @@ function importGenerated(fileData: FileData, autoPrefix: boolean) {
   fileData.forEach((item) => {
     if (autoPrefix)
       item.fileName = `${pascalCase(item.fileType)}${item.fileName}`
-    const importStr = `import ${item.fileName} from './${item.file}'\n`
-    generatedContext += importStr
+    const importStr = `import ${item.fileName} from '${path.join('./', item.file)}'\n`
+    generatedContext += path.normalize(importStr)
   })
   generatedContext += `
 export {
