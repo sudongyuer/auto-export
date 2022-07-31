@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.3.5
+
+### Patch Changes
+
+- d32ab56: release v0.3.5
+
 ## 0.3.4
 
 ### Patch Changes
