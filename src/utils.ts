@@ -1,6 +1,6 @@
-import path from 'node:path'
 import { cwd } from 'process'
 import fs from 'fs'
+import { relative, resolve } from 'pathe'
 import jiti from 'jiti'
 import chalk from 'chalk'
 import { loadConfig } from 'unconfig'
@@ -43,7 +43,7 @@ export function tryResolve(id: string, rootDir: string = process.cwd()) {
 }
 
 export async function tryImport(id: string, rootDir: string = process.cwd()): Promise<ExportConfig> {
-  const { default: exportConfig } = await import(path.resolve(rootDir, id))
+  const { default: exportConfig } = await import(resolve(rootDir, id))
   return exportConfig
 }
 
@@ -64,7 +64,7 @@ async function main() {
         console.error(chalk.bgRedBright('Please check the export.config.ts'))
         process.exit(-1)
       }
-      const absoluteOutputDirPath = path.resolve(cwd(), outputDir)
+      const absoluteOutputDirPath = resolve(cwd(), outputDir)
       // { fileName: string, file: string , fileType: string}[]
       const fileData = await findFile(targetDir, absoluteOutputDirPath, depth)
       if (fileData)
@@ -78,14 +78,14 @@ async function findFile(
   outputDir: string,
   depth: boolean,
 ): Promise<{ fileName: string; file: string; fileType: string }[]> {
-  const absolutePath = path.resolve(cwd(), filePath)
+  const absolutePath = resolve(cwd(), filePath)
   const files = fs.readdirSync(absolutePath)
   // Todo: any is not a good type
   // if (files.length === 0) return undefined as any
   const result = []
   for (const index in files) {
     const file = files[index]
-    const fileAbsolutePath = path.resolve(absolutePath, file)
+    const fileAbsolutePath = resolve(absolutePath, file)
     if (fs.statSync(fileAbsolutePath)?.isDirectory()) {
       if (depth)
         result.push(await findFile(fileAbsolutePath, outputDir, depth))
@@ -93,7 +93,7 @@ async function findFile(
     else {
       if (file !== 'index.ts' && file !== '.DS_Store') {
         const { fileName, fileType } = transformFileName(file)
-        const pathName = path.relative(outputDir, fileAbsolutePath)
+        const pathName = relative(outputDir, fileAbsolutePath)
         result.push({
           fileName,
           file: pathName,
@@ -119,10 +119,10 @@ async function generated(
     generatedContext = importGenerated(fileData, autoPrefix)
 
   fs.writeFileSync(
-    path.resolve(cwd(), `${outputDir}/index.ts`),
+    resolve(cwd(), `${outputDir}/index.ts`),
     generatedContext,
   )
-  console.warn(chalk.bgBlue(`${path.resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
+  console.warn(chalk.bgBlue(`${resolve(cwd(), `${outputDir}/index.ts`)}生成完毕，小弟撤退了🚗~`))
 }
 
 function customImportGenerated(fileData: FileData, customImport: CustomImport): string {
@@ -160,8 +160,8 @@ function importGenerated(fileData: FileData, autoPrefix: boolean) {
   fileData.forEach((item) => {
     if (autoPrefix)
       item.fileName = `${pascalCase(item.fileType)}${item.fileName}`
-    const importStr = `import ${item.fileName} from './${path.join(item.file).replaceAll('\\', '/')}'\n`
-    generatedContext += path.normalize(importStr)
+    const importStr = `import ${item.fileName} from './${item.file}'\n`
+    generatedContext += importStr
   })
   generatedContext += `
 export {

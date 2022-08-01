@@ -75,9 +75,3 @@ it('compatibility windows slash', () => {
   const importStr = `import PngA from '${path.join('a.png')}'\n`
   console.warn(importStr)
 })
-
-it('path transform', () => {
-  const needTransformPath = '.\\a\\b'
-  const transformedPath = needTransformPath.replaceAll('\\', '/')
-  expect(transformedPath).toEqual('./a/b')
-})
