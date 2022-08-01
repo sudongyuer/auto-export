@@ -1,5 +1,11 @@
 # @sudongyuer/auto-export
 
+## 0.3.7
+
+### Patch Changes
+
+- d902056: fix: window path
+
 ## 0.3.6
 
 ### Patch Changes
